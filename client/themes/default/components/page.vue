@@ -579,7 +579,6 @@ export default {
         el.onclick = ev => {
           ev.preventDefault()
           ev.stopPropagation()
-          console.log('asdfas')
           this.$vuetify.goTo(decodeURIComponent(ev.target.hash), this.scrollOpts)
         }
       })
