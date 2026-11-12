@@ -22,8 +22,8 @@
         tag="span"
         scope="global">
         <template #link>
-          <a href="https://js.wiki" target="_blank" rel="noopener noreferrer"
-            ><strong>Wiki.js</strong></a
+          <a href="https://chapyar.com" target="_blank" rel="noopener noreferrer"
+            ><strong>Chapyar</strong></a
           >
         </template>
       </i18n-t>
