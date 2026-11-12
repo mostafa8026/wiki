@@ -30,6 +30,17 @@ const REMOTE_BASE_URL = 'https://github.com/requarks/wiki-locales/raw/main'
 const SOURCE_LOCALE = 'en'
 
 /**
+ * Translations this build ships in `locales/` and keeps as the authority, the way `en` is: loaded on
+ * every boot and never replaced by the upstream package, which for these is untranslated (Chapyar fork).
+ */
+const SHIPPED_TRANSLATIONS = new Set(['fa-IR'])
+
+/** Whether this build's own copy of a locale wins over the db and over upstream. */
+function isShipped(code: string): boolean {
+  return code === SOURCE_LOCALE || SHIPPED_TRANSLATIONS.has(code)
+}
+
+/**
  * A `{name}` placeholder in a locale string, as vue-i18n writes them.
  *
  * A name with nothing to put in it is left as it stands rather than emptied: the string is then
@@ -248,7 +259,7 @@ class Locales {
         if (
           dbLang &&
           !force &&
-          code !== SOURCE_LOCALE &&
+          !isShipped(code) &&
           Temporal.Instant.compare(dbLang.updatedAt.toTemporalInstant(), flUpdatedAt) >= 0
         ) {
           WIKI.logger.info(`Locale ${code} is newer in the DB. Skipping disk version. [ OK ]`)
@@ -259,7 +270,7 @@ class Locales {
         WIKI.logger.info(`Loading locale ${code} into DB...`)
         const flStrings = JSON.parse(await readFile(flPath, 'utf8'))
         // -> The source locale is complete by definition: it is what everything else translates
-        const completeness = code === SOURCE_LOCALE ? 100 : null
+        const completeness = isShipped(code) ? 100 : null
         await WIKI.db
           .insert(localesTable)
           .values({
@@ -387,7 +398,7 @@ class Locales {
     const result: LocaleUpdateResult = { added: 0, updated: 0, unchanged: 0, failed: 0 }
     for (const entry of metadata) {
       const code = path.basename(entry.file, '.json')
-      if (code === SOURCE_LOCALE) {
+      if (isShipped(code)) {
         result.unchanged++
         continue
       }
@@ -451,7 +462,7 @@ class Locales {
   async install(code: string): Promise<void> {
     // -> There is nothing to install: it ships with the wiki and is loaded from disk on every boot,
     //    and downloading over it would replace this build's strings with an older release's
-    if (code === SOURCE_LOCALE) {
+    if (isShipped(code)) {
       throw new Error(`Locale ${code} ships with the wiki and cannot be downloaded.`)
     }
     const metadata = await this.fetchRemoteMetadata()
