@@ -18,7 +18,7 @@
         </template>
       </i18n-t>
       <i18n-t
-        :keypath="props.generic ? `common.footerGeneric` : `common.footerPoweredBy`"
+        :keypath="`common.footerPoweredBy`"
         tag="span"
         scope="global">
         <template #link>
