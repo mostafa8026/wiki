@@ -52,6 +52,16 @@ body::-webkit-scrollbar-thumb {
   --font-sans: 'Vazirmatn', 'Roboto', -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+// -> Code editors and the terminal lay their lines out left to right whatever the page around them
+//    does; inheriting `rtl` pushed Monaco's text off screen (Chapyar fork)
+.monaco-editor,
+.monaco-diff-editor,
+.context-view,
+.monaco-hover,
+.xterm {
+  direction: ltr;
+}
+
 // -> The light page paints its own surface, as the dark one does in MainLayout, so a browser whose
 //    canvas is dark never shows through behind the article (Chapyar fork)
 body.body--light {

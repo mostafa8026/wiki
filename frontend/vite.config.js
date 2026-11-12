@@ -11,6 +11,8 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import postcssRTLCSS from 'postcss-rtlcss'
 import { Mode as RTLMode } from 'postcss-rtlcss/options'
 
+const RTL_CSS = postcssRTLCSS({ mode: RTLMode.override })
+
 const TWEMOJI_ROUTE = '/_assets/svg/twemoji'
 
 /**
@@ -377,10 +379,27 @@ export default defineConfig(({ mode }) => {
       /*
         Every left/right declaration gets a mirrored `[dir="rtl"]` override, so the interface flips for
         a right-to-left locale (`App.vue` sets the attribute). Override mode leaves the LTR rules as
-        they are (Chapyar fork).
+        they are. Only the app's own stylesheets: Monaco, Excalidraw and xterm position themselves and
+        stay left to right, so their CSS from node_modules is left alone. A rule that sets `direction`
+        is about its own box (code blocks, LTR snippets) and is left as written (Chapyar fork).
       */
       postcss: {
-        plugins: [postcssRTLCSS({ mode: RTLMode.override })]
+        plugins: [
+          {
+            postcssPlugin: 'rtlcss-app-only',
+            Once(root, helpers) {
+              if (root.source?.input?.file?.includes('/node_modules/')) {
+                return
+              }
+              root.walkRules((rule) => {
+                if (rule.some((node) => node.type === 'decl' && node.prop === 'direction')) {
+                  rule.before(new helpers.Comment({ text: 'rtl:ignore' }))
+                }
+              })
+              return RTL_CSS.Once(root, helpers)
+            }
+          }
+        ]
       },
       preprocessorOptions: {
         scss: {
