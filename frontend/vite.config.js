@@ -391,12 +391,20 @@ export default defineConfig(({ mode }) => {
               if (root.source?.input?.file?.includes('/node_modules/')) {
                 return
               }
+              // -> Taken out of the tree while rtlcss runs, rather than trusting an `rtl:ignore` comment,
+              //    which the build did not honour on every rule
+              const kept = []
               root.walkRules((rule) => {
                 if (rule.some((node) => node.type === 'decl' && node.prop === 'direction')) {
-                  rule.before(new helpers.Comment({ text: 'rtl:ignore' }))
+                  const placeholder = new helpers.Comment({ text: 'rtlcss: kept as written' })
+                  rule.replaceWith(placeholder)
+                  kept.push([placeholder, rule])
                 }
               })
-              return RTL_CSS.Once(root, helpers)
+              RTL_CSS.Once(root, helpers)
+              for (const [placeholder, rule] of kept) {
+                placeholder.replaceWith(rule)
+              }
             }
           }
         ]
