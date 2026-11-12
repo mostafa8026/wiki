@@ -886,7 +886,13 @@ export async function renderAppShell(
   const withBody = withoutTitle.replace(/<body[^>]*>/i, (match) =>
     tags.bodyStart ? `${match}\n${tags.bodyStart}` : match
   )
+  /*
+    The interface opens in the site's primary locale, so the shell says so from the first paint rather
+    than once the bundle has loaded: the font and the right-to-left layout key on it (Chapyar fork).
+  */
+  const primary: string | undefined = siteId ? WIKI.sites[siteId]?.config?.locales?.primary : undefined
   const html = withBody
+    .replace(/<html lang="en">/i, (match) => (primary ? `<html${languageAttrs(primary)}>` : match))
     .replace('</head>', () => `  ${head}\n  </head>`)
     .replace('</body>', () => `${fragments.body}${injected.body}</body>`)
 

@@ -40,6 +40,18 @@ body::-webkit-scrollbar-thumb {
   font-family: 'Roboto Mono', Consolas, 'Liberation Mono', Courier, monospace;
 }
 
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url(/_assets/fonts/vazirmatn/vazirmatn-variable.woff2) format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+// -> Persian reads in Vazirmatn (Chapyar fork). The sans stack itself is swapped, so code keeps --font-mono
+:root:lang(fa) {
+  --font-sans: 'Vazirmatn', 'Roboto', -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
 // ------------------------------------------------------------------
 // THEME COLORS
 // ------------------------------------------------------------------

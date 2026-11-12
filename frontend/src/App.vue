@@ -132,6 +132,8 @@ async function applyLocale(locale) {
     anything else reading the document for its language.
   */
   document.documentElement.lang = locale
+  // -> And its direction, which the build's mirrored `[dir="rtl"]` rules key on (Chapyar fork)
+  document.documentElement.dir = siteStore.localeDir(locale)
 }
 
 // ACCESSIBILITY

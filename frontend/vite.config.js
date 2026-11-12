@@ -8,6 +8,8 @@ import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
+import postcssRTLCSS from 'postcss-rtlcss'
+import { Mode as RTLMode } from 'postcss-rtlcss/options'
 
 const TWEMOJI_ROUTE = '/_assets/svg/twemoji'
 
@@ -372,6 +374,14 @@ export default defineConfig(({ mode }) => {
       vueDevTools()
     ],
     css: {
+      /*
+        Every left/right declaration gets a mirrored `[dir="rtl"]` override, so the interface flips for
+        a right-to-left locale (`App.vue` sets the attribute). Override mode leaves the LTR rules as
+        they are (Chapyar fork).
+      */
+      postcss: {
+        plugins: [postcssRTLCSS({ mode: RTLMode.override })]
+      },
       preprocessorOptions: {
         scss: {
           /*
