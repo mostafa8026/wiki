@@ -1401,9 +1401,8 @@ const blogHref = computed(
 )
 
 /** The chevron between two crumbs points down the trail, which right to left is to the left. */
-const crumbSeparator = computed(() =>
-  siteStore.localeDir(commonStore.locale) === 'rtl' ? 'la:angle-left' : 'la:angle-right'
-)
+// -> Written for left to right; `[dir='rtl']` mirrors directional icons in `_base.scss` (Chapyar fork)
+const crumbSeparator = 'la:angle-right'
 
 /**
  * The trail the breadcrumb bar draws, root first. The Home crumb is prepended here rather than

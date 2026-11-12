@@ -178,7 +178,8 @@ const state = reactive({
 const dir = computed(() => siteStore.localeDir(commonStore.locale))
 
 /** The chevron into a folder points the way the line runs, which right to left is to the left. */
-const forwardIcon = computed(() => (dir.value === 'rtl' ? 'la:angle-left' : 'la:angle-right'))
+// -> Written for left to right; `[dir='rtl']` mirrors directional icons in `_base.scss` (Chapyar fork)
+const forwardIcon = 'la:angle-right'
 
 const level = computed(() => state.levels[state.path] ?? EMPTY_LEVEL)
 

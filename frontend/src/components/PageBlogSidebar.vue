@@ -135,9 +135,8 @@ const openYears = reactive(new Set())
 // COMPUTED
 
 /** A closed year's chevron points along the line, which on a right-to-left page is to the left. */
-const collapsedIcon = computed(() =>
-  siteStore.localeDir(pageStore.locale) === 'rtl' ? 'la:angle-left' : 'la:angle-right'
-)
+// -> Written for left to right; `[dir='rtl']` mirrors directional icons in `_base.scss` (Chapyar fork)
+const collapsedIcon = 'la:angle-right'
 
 const settings = computed(() => parseBlog(pageStore.content))
 

@@ -52,6 +52,42 @@ body::-webkit-scrollbar-thumb {
   --font-sans: 'Vazirmatn', 'Roboto', -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+// -> The light page paints its own surface, as the dark one does in MainLayout, so a browser whose
+//    canvas is dark never shows through behind the article (Chapyar fork)
+body.body--light {
+  background-color: #fff;
+}
+
+/*
+  Icons that point along the line are drawn for left to right and turn round with it (Chapyar fork).
+  An exact list, so alignment and vertical icons stay as they are. `scale` rather than `transform`,
+  which composes with any transform the icon already carries.
+*/
+[dir='rtl'] .w-icon:is(
+    [data-icon='la:angle-left'],
+    [data-icon='la:angle-right'],
+    [data-icon='la:arrow-left'],
+    [data-icon='la:arrow-right'],
+    [data-icon='la:arrow-circle-left'],
+    [data-icon='la:arrow-circle-right'],
+    [data-icon='la:caret-square-right'],
+    [data-icon='mdi:arrow-right'],
+    [data-icon='mdi:chevron-left'],
+    [data-icon='mdi:chevron-right'],
+    [data-icon='la:undo'],
+    [data-icon='la:redo'],
+    [data-icon='mdi:undo-variant'],
+    [data-icon='mdi:redo-variant'],
+    [data-icon='la:reply'],
+    [data-icon='mdi:reply-outline'],
+    [data-icon='la:sign-out-alt'],
+    [data-icon='mdi:logout'],
+    [data-icon='mdi:format-indent-increase'],
+    [data-icon='mdi:format-indent-decrease']
+  ) {
+  scale: -1 1;
+}
+
 // ------------------------------------------------------------------
 // THEME COLORS
 // ------------------------------------------------------------------
