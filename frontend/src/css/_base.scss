@@ -47,9 +47,11 @@ body::-webkit-scrollbar-thumb {
   font-display: swap;
 }
 
-// -> Persian reads in Vazirmatn (Chapyar fork). The sans stack itself is swapped, so code keeps --font-mono
+// -> Persian reads in Vazirmatn (Chapyar fork). Code keeps Roboto Mono for its Latin, and takes
+//    Vazirmatn for Persian before the system monospace fonts, whose Arabic letters are drawn unjoined
 :root:lang(fa) {
   --font-sans: 'Vazirmatn', 'Roboto', -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: 'Roboto Mono', 'Vazirmatn', Consolas, 'Liberation Mono', Courier, monospace;
 }
 
 // -> Code editors and the terminal lay their lines out left to right whatever the page around them
