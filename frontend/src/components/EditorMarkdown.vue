@@ -434,6 +434,7 @@ import {
 } from '@/helpers/markdownBlocks'
 import { findImages, imageValues, writeImage } from '@/helpers/markdownImages'
 import { findEditableTables, tableRowToAdd, tableWithColumnAdded } from '@/helpers/markdownTable'
+import { followLineDirection } from '@/helpers/monacoLineDirection'
 
 import EditorCodeBlockMenu from '@/components/EditorCodeBlockMenu.vue'
 import EditorContentsPane from '@/components/EditorContentsPane.vue'
@@ -2190,6 +2191,9 @@ onMounted(async () => {
   // -> Blocks fold down to their two fences, a drawing's XML from the start -- see `useBlockFolding`
   blockFolding.register()
   blockFolding.foldCanvasBlocks()
+
+  // -> A Persian line reads right to left, its markup and all -- see `followLineDirection`
+  followLineDirection(editor, siteStore.localeDir(docLocale.value))
 
   // -> Define Formatting Actions
   editor.addAction({
